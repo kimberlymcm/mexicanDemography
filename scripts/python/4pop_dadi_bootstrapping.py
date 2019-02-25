@@ -6,7 +6,7 @@ import argparse
 
 import numpy
 
-import dadiHacks
+import dadi_hacks
 import nat_model_SG
 import marginal_optimization
 import dadi
@@ -32,18 +32,6 @@ def create_fss(dd, divergence):
     fs = dadi.Spectrum.from_data_dict_corrected(dd, ["MYA", "TRQ"], [POP_DICT["MYA"], POP_DICT["TRQ"]], FUX_FN)
     fss.append(fs.copy())
     return fss
-
-
-def compare_to_base(model, fss):
-    """ Get results of base model """
-
-    # Sum of the likelihoods of the models based on the startparms.
-    # Compares model based on starting params to the real data
-    ll_low_model = numpy.sum(map(lambda i: dadi.Inference.ll_multinom(model[i], fss[i]), range(NSPEC)))
-    print "Coarse grid model Model log-likelihood: ", ll_low_model
-    # The optimal value of theta given the model.
-    thetas = map(lambda i: dadi.Inference.optimal_sfs_scaling(model[i], fss[i]), range(NSPEC))
-    print "Initial thetas are: " + str(thetas)
 
 
 def output_results(outFile, result):
