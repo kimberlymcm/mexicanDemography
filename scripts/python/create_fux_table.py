@@ -29,7 +29,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create fux table")
-    parser.add_argument("--out_prefix", default="fux_table_")
+    parser.add_argument("--out_prefix",
+        default="/home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/fux_table_")
     parser.add_argument("--divergence", default=0.0121, type=float)
     args = parser.parse_args()
     main(args)
