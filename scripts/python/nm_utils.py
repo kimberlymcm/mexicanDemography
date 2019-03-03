@@ -2,6 +2,8 @@
 
 import numpy
 
+import dadi
+
 
 DATA_DICT_FN = "/home/kfm/kfm_projects/NA/NA_data/getIntrons/remaskingNAH/NA_CHB_exomes_20150826.data_dict"
 

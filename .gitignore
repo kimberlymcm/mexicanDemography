@@ -1,2 +1,5 @@
 *.DS_Store
 *.pyc
+pipelines/main/logs/*
+data/*
+results/*

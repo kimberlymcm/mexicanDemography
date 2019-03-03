@@ -14,6 +14,9 @@ for num in {1..1000}; do
 #SBATCH --job-name="Run_dadi_models_${num}"
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-user=kimberly.mcmanus@gmail.com
+#SBATCH -o logs/bootstrap_dadi_${num}.out
+#SBATCH -e logs/bootstrap_dadi_${num}.error
+
 # The following settings are optimal for *most* software, we want one task 
 # to have one or more cores available for that task to fork or use threads.
 #SBATCH --nodes=1
@@ -34,7 +37,10 @@ env | grep "SLURM" | sort
 echo "My limits are:"
 ulimit -a
 
-python ../../scripts/python/4pop_dadi_bootstrapping.py --inFile ${num} --out ${num}
+python2.7 ../../scripts/python/4pop_dadi_bootstrapping.py \
+--inFile ${num} --out ${num} --divergence 0.0121
     
 EOF
+
+sleep 1 # seeing if this stops the problem
 done

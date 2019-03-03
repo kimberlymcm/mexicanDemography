@@ -19,7 +19,7 @@ total_blocks <- 0
 
 for (j in 1:22) {
   print(j)
-  targChr <- subset(targets, chr == j) # Limit to sites in relevant chr
+  targ_chr <- subset(targets, chr == j) # Limit to sites in relevant chr
   len <- chr_lens[j, 2]
   num_blocks <- round(len / block_size) # Num blocks to break chr into
   start_pos <- 0
@@ -35,4 +35,4 @@ for (j in 1:22) {
   }
 }
 print(total_blocks)
-write.table(blocks, "../data/bootstrapping/bootstrap_blocks.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table(blocks, "../../data/bootstrapping/bootstrap_blocks.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)

@@ -2,6 +2,9 @@
     Run the best performing 4 population dadi model for the bootstrapping results
 """
 
+import sys
+sys.path.append('/home/kfm/kfm_projects/NA/mexicanDemography/scripts/python')
+
 import argparse
 
 import numpy
@@ -19,17 +22,17 @@ def create_fss(dd, divergence):
 
     fux_table = "/home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/fux_table_" + str(divergence) + ".dat"
     fss = []
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "MYA"], [POP_DICT["TAR"], POP_DICT["MYA"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "MYA"], [POP_DICT["TAR"], POP_DICT["MYA"]], fux_table)
     fss.append(fs.copy())
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "TRQ"], [POP_DICT["TAR"], POP_DICT["TRQ"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "TRQ"], [POP_DICT["TAR"], POP_DICT["TRQ"]], fux_table)
     fss.append(fs.copy())
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["HUI", "MYA"], [POP_DICT["HUI"], POP_DICT["MYA"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["HUI", "MYA"], [POP_DICT["HUI"], POP_DICT["MYA"]], fux_table)
     fss.append(fs.copy())
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["HUI", "TRQ"], [POP_DICT["HUI"], POP_DICT["TRQ"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["HUI", "TRQ"], [POP_DICT["HUI"], POP_DICT["TRQ"]], fux_table)
     fss.append(fs.copy())
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "HUI"], [POP_DICT["TAR"], POP_DICT["HUI"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["TAR", "HUI"], [POP_DICT["TAR"], POP_DICT["HUI"]], fux_table)
     fss.append(fs.copy())
-    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["MYA", "TRQ"], [POP_DICT["MYA"], POP_DICT["TRQ"]], FUX_FN)
+    fs = dadi.Spectrum.from_data_dict_corrected(dd, ["MYA", "TRQ"], [POP_DICT["MYA"], POP_DICT["TRQ"]], fux_table)
     fss.append(fs.copy())
     return fss
 
@@ -49,7 +52,7 @@ def main(args):
     inFile = "../../data/bootstrapping/input_bootstrap/Bootstrap_" + str(args.inFile) + ".txt"
 
     dd = dadi.Misc.make_data_dict(inFile)
-    fss = create_fss(dd, divergence)
+    fss = create_fss(dd, args.divergence)
 
     nss = [fs.sample_sizes for fs in fss]
 
@@ -63,7 +66,7 @@ def main(args):
     lower_bound = [0,    0.1,  1e-7, 1e-7,     0.0003,   0.05,  0.05,  0.05,  0.05]
 
     # Make the extrapolating version of our demographic model function.
-    func_ex = dadiHacks.make_extrap_func_multispec(func, extrap_log=True)
+    func_ex = dadi_hacks.make_extrap_func_multispec(func, extrap_log=True)
     print "running model"
     model = func_ex(startparams, nss, PTS_L) # Calculate the model AFS
     print "number of reads in the data" # Perform a sanity check
@@ -119,6 +122,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create fux table")
     parser.add_argument("--out", default="1")
     parser.add_argument("--inFile", default="1")
-    parser.add_argument("--divergence", default=0.0121)
+    parser.add_argument("--divergence", default=0.0121, type=float)
     args = parser.parse_args()
     main(args)
+

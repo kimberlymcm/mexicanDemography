@@ -3,7 +3,7 @@
 
 
 reps <- 1000
-blocks <- read.table("../data/bootstrapping/bootstrap_blocks.txt")
+blocks <- read.table("../../data/bootstrapping/bootstrap_blocks.txt")
 colnames(blocks) <- c("chr", "start", "stop1", "SNP")
 data <- read.table("/home/kfm/kfm_projects/NA/NA_data/getIntrons/remaskingNAH/NA_CHB_exomes_20150826.data_dict",
   header = TRUE)
@@ -18,7 +18,7 @@ for (i in 1:reps){
   # Random sample, with replacement
   new_blocks <- blocks[sample(nrow(blocks), nrow(blocks), replace=TRUE), ]
   result <- vector()
-  callable_seq_len <- sum(newBlocks[, "SNP"])
+  callable_seq_len <- sum(new_blocks[, "SNP"])
   all_call <- c(all_call, callable_seq_len)
   
   # For each new block

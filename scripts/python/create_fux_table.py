@@ -8,6 +8,8 @@
   More details at: https://bitbucket.org/gutenkunstlab/dadi
 """
 
+import sys
+import os.path
 import argparse
 
 import dadi
@@ -18,6 +20,10 @@ TRI_FREQ_FN = "/home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/tri_freq.
 
 
 def main(args):
+
+    outfn = args.out_prefix + str(args.divergence) + ".dat"
+    if os.path.isfile(outfn):
+        sys.exit("Output file already exists")
 
     Q = dadi.Numerics.array_from_file(TRANS_MAT_FN)
     tri_freq = dict((line.split()[0], float(line.split()[1]))
@@ -34,3 +40,4 @@ if __name__ == "__main__":
     parser.add_argument("--divergence", default=0.0121, type=float)
     args = parser.parse_args()
     main(args)
+

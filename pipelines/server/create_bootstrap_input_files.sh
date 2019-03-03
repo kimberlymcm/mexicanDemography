@@ -8,6 +8,8 @@
 
 # Set a name for the job, visible in `squeue`
 #SBATCH --job-name="Create Bootstrapped Files."
+#SBATCH --mail-type=FAIL,BEGIN,END
+#SBATCH --mail-user=kimberly.mcmanus@gmail.com
 
 # The following settings are optimal for *most* software, we want one task 
 # to have one or more cores available for that task to fork or use threads.
@@ -24,4 +26,4 @@
 # 5GB of RAM
 #SBATCH --mem=5G
 
-Rscript make_input_files.R
+Rscript ../../scripts/R/make_input_files.R

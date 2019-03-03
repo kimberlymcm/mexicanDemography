@@ -10,7 +10,7 @@
 # 8889201
 
 mkdir -p ../../data/bootstrapping
-Rscript ../../scripts/R/get_blocks.r
+Rscript ../../scripts/R/get_blocks.R
 
 mkdir -p ../../data/bootstrapping/input_bootstrap
 mkdir -p ../../results/bootstrapping
@@ -19,19 +19,24 @@ mkdir -p ../../results/bootstrapping
 # Below runs makeInputFiles.r
 # It reads from: ../NA_CHB_exomes_20150826.data_dict
 # It also calculates the callable genome length of each bootstrap replicate
-sh ../server/create_bootstrap_input_files.sh
+sbatch ../server/create_bootstrap_input_files.sh
 
 for i in {1..1000}; do
     sed -i $'1 i\\\nHuman\tChimp\tAllele1\tHUI\tMYA\tNAH\tTAR\tTRQ\tCHB\tAllele2\tHUI\tMYA\tNAH\tTAR\tTRQ\tCHB\tchr\tpos\tnum' \
     ../../data/bootstrapping/input_bootstrap/Bootstrap_${i}.txt
 done
 
+# Create fux_table for dadi (if it isn't already created)
+python2.7 ../../scripts/python/create_fux_table.py \
+--out_prefix /home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/fux_table_ \
+--divergence 0.0121
+
 
 # Then, run dadi
 # This runs: 4pop_dadi_bootstrapping.py
 # Divergence rate: 0.0121
 # Tb: 0.09 (even though it looks like I stored results for 0.09 and 0.1, so maybe I manually changed this)
-sh ../server/run_dadi.sh
+sh ../server/run_dadi_bootstrapping.sh
 
 # Get the confidence intervals of the results
 Rscript ../../scripts/R/get_confidence_intervals.R
