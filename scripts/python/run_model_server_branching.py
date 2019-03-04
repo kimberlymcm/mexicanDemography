@@ -5,10 +5,8 @@
 
 
 import argparse
-
 import numpy
-
-import dadiHacks
+import dadi_hacks
 import marginal_optimization
 import dadi
 import nat_model_SG
@@ -41,15 +39,13 @@ POP_SIZES = [[26, 24, 16, 14],
              [14, 26, 24, 16],
              [14, 24, 16, 26]]
 
-
 OUTFILE_PREFIX = "20190218_branching_Tb0.09_"
-
 
 
 def create_fss(dd, k, divergence, pop_list):
     """ Create true frequency spectra """
 
-    fux_table = "fux_table_" + str(divergence) + ".dat"
+    fux_table = "/home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/fux_table_" + str(divergence) + ".dat"
     fss = []
     fs = dadi.Spectrum.from_data_dict_corrected(dd, [pop_list[0], pop_list[3]], [POP_SIZES[k][0], POP_SIZES[k][3]], fux_table)
     fss.append(fs.copy())
@@ -64,8 +60,6 @@ def create_fss(dd, k, divergence, pop_list):
     fs = dadi.Spectrum.from_data_dict_corrected(dd, [pop_list[3], pop_list[2]], [POP_SIZES[k][3], POP_SIZES[k][2]], fux_table)
     fss.append(fs.copy())
     return fss
-
-
 
 
 def main(args):
@@ -92,7 +86,7 @@ def main(args):
 
 
         # Make the extrapolating version of our demographic model function.
-        func_ex = dadiHacks.make_extrap_func_multispec(func, extrap_log=True)
+        func_ex = dadi_hacks.make_extrap_func_multispec(func, extrap_log=True)
         print "running model"
         model = func_ex(start_params, nss, PTS_L) # Calculate the model AFS
         print "number of reads in the data" # perform a sanity check
@@ -104,7 +98,7 @@ def main(args):
 
         ratios = [fs.data.sum() / len(dd) for fs in fss]
 
-        outFile = "20190218_branching_Tb0.09_" + str(pop_list[0]) + "_" + str(pop_list[1]) + "_" + str(pop_list[2]) + "_" + str(pop_list[3]) + ".txt"
+        outFile = "../../results/tree_topologies/20190301_branching_Tb0.09_" + str(pop_list[0]) + "_" + str(pop_list[1]) + "_" + str(pop_list[2]) + "_" + str(pop_list[3]) + ".txt"
         f = open(outFile, 'a')
 
         for i in range(4):

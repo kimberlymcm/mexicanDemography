@@ -4,10 +4,9 @@
 """
 
 import argparse
-
 import numpy
 
-import dadiHacks
+import dadi_hacks
 import marginal_optimization
 import dadi
 import nat_model_SG
@@ -30,7 +29,7 @@ POP_SIZES = [[26, 24, 16, 14],
 def create_fss(dd, k, divergence):
     """ Create true frequency spectra """
 
-    fux_table = "fux_table_" + str(divergence) + ".dat"
+    fux_table = "/home/kfm/kfm_projects/NA/NA_data/getIntrons/dadi_other/fux_table_" + str(divergence) + ".dat"
     fss = []
     fs = dadi.Spectrum.from_data_dict_corrected(dd, [POPS[k][0], POPS[k][3]], [POP_SIZES[k][0], POP_SIZES[k][3]], fux_table)
     fss.append(fs.copy())
@@ -68,7 +67,7 @@ def main(args):
         lower_bound =  [0,    0.1,  1e-7, 1e-7,     0.0003,   0.05,  0.05,  0.05,  0.05]
 
         # Make the extrapolating version of our demographic model function.
-        func_ex = dadiHacks.make_extrap_func_multispec(func, extrap_log=True)
+        func_ex = dadi_hacks.make_extrap_func_multispec(func, extrap_log=True)
         print "running model"
         model = func_ex(start_params, nss, PTS_L) # Calculate the model AFS
         print "number of reads in the data" # perform a sanity check
@@ -80,7 +79,7 @@ def main(args):
 
         ratios = [fs.data.sum() / len(dd) for fs in fss]
 
-        outFile = "20190218_4pop_Tb0.09_rotate_" + str(pops[k][0]) + "_" + str(pops[k][1]) + "_" + str(pops[k][2]) + "_" + str(pops[k][3]) + ".txt"
+        outFile = "../../results/tree_topologies/20190301_4pop_Tb0.09_rotate_" + str(POPS[k][0]) + "_" + str(POPS[k][1]) + "_" + str(POPS[k][2]) + "_" + str(POPS[k][3]) + ".txt"
         f = open(outFile, "a")
 
         for i in range(4):
