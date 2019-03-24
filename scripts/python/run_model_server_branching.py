@@ -74,7 +74,7 @@ def main(args):
 
         nss = [fs.sample_sizes for fs in fss]
 
-        #Prepare the custom model
+        # Prepare the custom model
         func = nat_model_SG.Kimberly_method_branching
 
         #              (Tb,   Nb,  T_s1,  T_s2, T_s3,   N_Tar, N_Hui, N_Trq, N_Mya)
@@ -127,10 +127,10 @@ def main(args):
             best = lls.index(max(lls))    
             ll_model = func_ex(popts[best], nss, PTS_L)
             thetas = map(lambda i: dadi.Inference.optimal_sfs_scaling(model[i], fss[i]), range(NSPEC))
-            #print "thetas are", thetas
+            # print "thetas are", thetas
             effectTheta = (numpy.array(lthetas[best]) / numpy.array(ratios)).mean()
-            #print "effect theta", effectTheta
-            #print "params" + " ".join(map(str, popt)) + "\n"
+            # print "effect theta", effectTheta
+            # print "params" + " ".join(map(str, popt)) + "\n"
             end = nat_model_SG.Kimberly_convert_params_fewerSizes(popts[best], theta=effectTheta, gen_time=29.0, L=8889201, mu=1.25e-8)
             result = str(lls[best]) + "\t" + str(effectTheta) + "\t" + "\t".join(map(str, end)) + "\n"
             print result
