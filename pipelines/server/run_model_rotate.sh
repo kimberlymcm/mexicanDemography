@@ -14,7 +14,7 @@
 # There are to ways to specify memory, --mem= and --mem-per-cpu=
 # --mem is usually enough since total job memory is easy to specify 
 # this way.
-#SBATCH --mem=5G
+#SBATCH --mem=10G
 
 echo "Parallel task num ${num}"
 date

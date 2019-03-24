@@ -6,7 +6,6 @@
 # it is the only way I saw an example for
 
 for num in {1..1000}; do
-
     cat << EOF | sbatch
 #!/bin/bash
 #SBATCH --account=cdbustam

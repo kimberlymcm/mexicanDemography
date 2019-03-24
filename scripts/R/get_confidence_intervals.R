@@ -3,8 +3,9 @@
 #   Dadi_Results/Bootstrapping/Procedure doc
 
 prev <- 1
-for (i in 1:1000){ 
-    fname <- paste(c("../../results/bootstrapping//results_0.09Tb/20190224_bootstrap.", i),
+for (i in 1:1000){
+
+    fname <- paste(c("../../results/bootstrapping/results_0.09Tb/20190224_bootstrap.", i),
         collapse = "")
 
     # In the google doc, the below line was incorrectly placed here.

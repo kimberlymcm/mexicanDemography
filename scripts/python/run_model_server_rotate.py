@@ -13,13 +13,15 @@ import nat_model_SG
 from nm_utils import DATA_DICT_FN, NSPEC, PTS_L, compare_to_self, compare_to_base
 
 
-POPS = [["TAR", "HUI", "TRQ", "MYA"],
+POPS = [["MYA", "HUI", "TRQ", "TAR"],
+        ["TAR", "HUI", "TRQ", "MYA"],
         ["TRQ", "MYA", "TAR", "HUI"],
         ["TRQ", "HUI", "TAR", "MYA"],
         ["TRQ", "TAR", "HUI", "MYA"],
         ["MYA", "TAR", "HUI", "TRQ"]]
 
-POP_SIZES = [[26, 24, 16, 14],
+POP_SIZES = [[14, 24, 16, 26],
+             [26, 24, 16, 14],
              [16, 14, 26, 24],
              [16, 24, 26, 14],
              [16, 26, 24, 14],
@@ -79,8 +81,8 @@ def main(args):
 
         ratios = [fs.data.sum() / len(dd) for fs in fss]
 
-        outFile = "../../results/tree_topologies/20190301_4pop_Tb0.09_rotate_" + str(POPS[k][0]) + "_" + str(POPS[k][1]) + "_" + str(POPS[k][2]) + "_" + str(POPS[k][3]) + ".txt"
-        f = open(outFile, "a")
+        outFile = "../../results/tree_topologies/20190317_4pop_Tb0.09_rotate_" + str(POPS[k][0]) + "_" + str(POPS[k][1]) + "_" + str(POPS[k][2]) + "_" + str(POPS[k][3]) + ".txt"
+        #f = open(outFile, "a")
 
         for i in range(4):
             p0 = dadi.Misc.perturb_params(start_params, lower_bound=lower_bound, upper_bound=upper_bound, fold=2)
@@ -109,12 +111,13 @@ def main(args):
             ll_model = func_ex(popts[best], nss, PTS_L)
             thetas = map(lambda i: dadi.Inference.optimal_sfs_scaling(model[i], fss[i]), range(NSPEC))
             effectTheta = (numpy.array(lthetas[best]) / numpy.array(ratios)).mean()
-
+            print effectTheta
             end = nat_model_SG.Kimberly_convert_params_fewerSizes(popts[best], theta=effectTheta, gen_time=29.0, L=8889201, mu=1.25e-8)
             result = str(lls[best]) + "\t" + str(effectTheta) + "\t" + "\t".join(map(str, end)) + "\n"
             print result
+            f = open(outFile, "a")
             f.write(result)
-        f.close()
+            f.close()
 
 
 if __name__ == "__main__":
