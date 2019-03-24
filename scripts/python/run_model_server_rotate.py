@@ -14,14 +14,14 @@ from nm_utils import DATA_DICT_FN, NSPEC, PTS_L, compare_to_self, compare_to_bas
 
 
 POPS = [["MYA", "HUI", "TRQ", "TAR"],
-        ["TAR", "HUI", "TRQ", "MYA"],
+        ["TAR", "HUI", "TRQ", "MYA"], # Best performing
         ["TRQ", "MYA", "TAR", "HUI"],
         ["TRQ", "HUI", "TAR", "MYA"],
         ["TRQ", "TAR", "HUI", "MYA"],
         ["MYA", "TAR", "HUI", "TRQ"]]
 
 POP_SIZES = [[14, 24, 16, 26],
-             [26, 24, 16, 14],
+             [26, 24, 16, 14], # Best performing
              [16, 14, 26, 24],
              [16, 24, 26, 14],
              [16, 26, 24, 14],
@@ -52,7 +52,7 @@ def create_fss(dd, k, divergence):
 def main(args):
 
     # TODO (kmcmanus): Break this function into smaller pieces
-    for k in range(5):
+    for k in range(6):
 
         dd = dadi.Misc.make_data_dict(DATA_DICT_FN)
         fss = create_fss(dd, k, args.divergence)
@@ -81,8 +81,7 @@ def main(args):
 
         ratios = [fs.data.sum() / len(dd) for fs in fss]
 
-        outFile = "../../results/tree_topologies/20190317_4pop_Tb0.09_rotate_" + str(POPS[k][0]) + "_" + str(POPS[k][1]) + "_" + str(POPS[k][2]) + "_" + str(POPS[k][3]) + ".txt"
-        #f = open(outFile, "a")
+        outFile = "../../results/tree_topologies/20190324_4pop_Tb0.09_rotate_" + str(POPS[k][0]) + "_" + str(POPS[k][1]) + "_" + str(POPS[k][2]) + "_" + str(POPS[k][3]) + ".txt"
 
         for i in range(4):
             p0 = dadi.Misc.perturb_params(start_params, lower_bound=lower_bound, upper_bound=upper_bound, fold=2)
@@ -106,8 +105,8 @@ def main(args):
                 ll_model = numpy.sum(map(lambda i: dadi.Inference.ll_multinom(model[i], fss[i]), range(NSPEC)))
                 lls.append(ll_model)
                 popts.append(popt)
+
             best = lls.index(max(lls))    
-            #converting parameters
             ll_model = func_ex(popts[best], nss, PTS_L)
             thetas = map(lambda i: dadi.Inference.optimal_sfs_scaling(model[i], fss[i]), range(NSPEC))
             effectTheta = (numpy.array(lthetas[best]) / numpy.array(ratios)).mean()
